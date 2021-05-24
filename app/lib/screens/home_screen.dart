@@ -74,55 +74,59 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar,
-      body: SingleChildScrollView(
-        child: _transactionList.isNotEmpty
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                    if (_showChart || !Responsive.isLandscape(context))
-                      Container(
-                        // Responsive Height to Chart
-                        height: Responsive.height(context, _appBar) *
-                            (Responsive.isLandscape(context) ? .7 : .3),
-                        child: Chart(_recentTransaction),
-                      ),
-                    if (!_showChart || !Responsive.isLandscape(context))
-                      Container(
-                        height: Responsive.height(context, _appBar) * .7,
-                        child: TransactionList(
-                          transctionModeList: _transactionList,
-                          toDelete: _removeTransaction,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: _transactionList.isNotEmpty
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                      if (_showChart || !Responsive.isLandscape(context))
+                        Container(
+                          // Responsive Height to Chart
+                          height: Responsive.height(context, _appBar) *
+                              (Responsive.isLandscape(context) ? .7 : .3),
+                          child: Chart(_recentTransaction),
                         ),
-                      )
-                  ])
-            : Container(
-                color: Colors.white,
-                width: double.infinity,
-                height: Responsive.height(context, _appBar),
-                child: LayoutBuilder(
-                  builder: (context, constraints) => Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: constraints.maxHeight * 0.6,
-                        child: Image.asset(
-                          'assets/images/teen-walking.gif',
-                          fit: BoxFit.cover,
+                      if (!_showChart || !Responsive.isLandscape(context))
+                        Container(
+                          height: Responsive.height(context, _appBar) * .7,
+                          child: TransactionList(
+                            transctionModeList: _transactionList,
+                            toDelete: _removeTransaction,
+                          ),
+                        )
+                    ])
+              : Container(
+                  color: Colors.white,
+                  width: double.infinity,
+                  height: Responsive.height(context, _appBar),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: constraints.maxHeight * 0.6,
+                          child: Image.asset(
+                            'assets/images/teen-walking.gif',
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
+              isScrollControlled: true,
               context: context,
               builder: (context) {
                 return SingleChildScrollView(
-                    child: TransactionForm(onAddedExpense: _addTransaction));
+                  child: TransactionForm(onAddedExpense: _addTransaction),
+                );
               });
         },
         child: Icon(Icons.add),
