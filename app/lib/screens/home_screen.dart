@@ -1,5 +1,5 @@
 import 'package:app/models/transacion_model.dart';
-import 'package:app/utils/avaliable_size.dart';
+import 'package:app/utils/responsive.dart';
 import 'package:app/widgets/chart.dart';
 import 'package:app/widgets/transaction_form.dart';
 import 'package:app/widgets/transaction_list.dart';
@@ -69,25 +69,28 @@ class _HomeScreenState extends State<HomeScreen> {
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(Messages.LABEL_SHOW_CHART),
-                        Switch(
-                          value: _switchValue,
-                          onChanged: (value) =>
-                              setState(() => _switchValue = value),
-                        ),
-                      ],
-                    ),
-                    if (_switchValue)
+                    if (Responsive.isLandscape(context))
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(Messages.LABEL_SHOW_CHART),
+                          Switch(
+                            value: _switchValue,
+                            onChanged: (value) =>
+                                setState(() => _switchValue = value),
+                          ),
+                        ],
+                      ),
+                    if (_switchValue || !Responsive.isLandscape(context))
                       Container(
-                        height: AvaliableSize.height(context, _appBar) * .3,
+                        // Responsive Height to Chart
+                        height: Responsive.height(context, _appBar) *
+                            (Responsive.isLandscape(context) ? .7 : .3),
                         child: Chart(_recentTransaction),
                       ),
-                    if (!_switchValue)
+                    if (!_switchValue || !Responsive.isLandscape(context))
                       Container(
-                        height: AvaliableSize.height(context, _appBar) * .7,
+                        height: Responsive.height(context, _appBar) * .7,
                         child: TransactionList(
                           transctionModeList: _transactionList,
                           toDelete: _removeTransaction,
@@ -97,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
             : Container(
                 color: Colors.white,
                 width: double.infinity,
-                height: AvaliableSize.height(context, _appBar),
+                height: Responsive.height(context, _appBar),
                 child: LayoutBuilder(
                   builder: (context, constraints) => Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
