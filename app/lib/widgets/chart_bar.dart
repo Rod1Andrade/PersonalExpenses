@@ -16,43 +16,47 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-            height: 15,
-            child: FittedBox(child: Text('${value.toStringAsFixed(2)}'))),
-        SizedBox(height: 5),
-        Container(
-          width: 10,
-          height: 60,
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white10,
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                ),
-              ),
-              FractionallySizedBox(
-                heightFactor: percent,
-                child: Container(
+    return LayoutBuilder(
+      builder: (context, contraints) => Column(
+        children: [
+          Container(
+              height: contraints.maxHeight * .15,
+              child: FittedBox(child: Text('${value.toStringAsFixed(2)}'))),
+          SizedBox(height: contraints.maxHeight * .05),
+          Container(
+            width: 10,
+            height: contraints.maxHeight * .6,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
+                    color: Colors.white10,
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   ),
                 ),
-              )
-            ],
+                FractionallySizedBox(
+                  heightFactor: percent,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
-        SizedBox(height: 5),
-        Text(weekDay),
-      ],
+          SizedBox(height: contraints.maxHeight * .05),
+          Container(
+              height: contraints.maxHeight * .15,
+              child: FittedBox(child: Text(weekDay))),
+        ],
+      ),
     );
   }
 }
