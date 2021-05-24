@@ -16,6 +16,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool _switchValue = false;
+
   /// App bar
   final _appBar = AppBar(
     title: Text(Messages.APP_TITLE),
@@ -67,35 +69,50 @@ class _HomeScreenState extends State<HomeScreen> {
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                    Container(
-                      height: AvaliableSize.height(context, _appBar) * .3,
-                      child: Chart(_recentTransaction),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(Messages.LABEL_SHOW_CHART),
+                        Switch(
+                          value: _switchValue,
+                          onChanged: (value) =>
+                              setState(() => _switchValue = value),
+                        ),
+                      ],
                     ),
-                    Container(
-                      height: AvaliableSize.height(context, _appBar) * .7,
-                      child: TransactionList(
-                        transctionModeList: _transactionList,
-                        toDelete: _removeTransaction,
+                    if (_switchValue)
+                      Container(
+                        height: AvaliableSize.height(context, _appBar) * .3,
+                        child: Chart(_recentTransaction),
                       ),
-                    )
+                    if (!_switchValue)
+                      Container(
+                        height: AvaliableSize.height(context, _appBar) * .7,
+                        child: TransactionList(
+                          transctionModeList: _transactionList,
+                          toDelete: _removeTransaction,
+                        ),
+                      )
                   ])
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    'assets/images/teen-walking.gif',
-                    fit: BoxFit.cover,
+            : Container(
+                color: Colors.white,
+                width: double.infinity,
+                height: AvaliableSize.height(context, _appBar),
+                child: LayoutBuilder(
+                  builder: (context, constraints) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: constraints.maxHeight * 0.6,
+                        child: Image.asset(
+                          'assets/images/teen-walking.gif',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      Messages.TITLE_NO_EXPENSES,
-                      style: TextStyle(
-                          fontSize:
-                              Theme.of(context).textTheme.headline6.fontSize),
-                    ),
-                  ),
-                ],
+                ),
               ),
       ),
       floatingActionButton: FloatingActionButton(

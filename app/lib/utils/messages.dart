@@ -11,6 +11,8 @@ class Messages {
   static const String LABEL_VALUE = 'Valor';
   static const String LABEL_NO_DATA_SELECTED = 'Nenhuma data selecionada';
   static const String LABEL_DATA_SELECTED = 'Data selecionada';
+  static const String LABEL_SHOW_CHART = 'Exibir Gráfico';
+  static const String LABEL_SHOW_LIST = 'Exibir Lista';
 
   static const String PREFIX_REAL = 'R\$';
 
