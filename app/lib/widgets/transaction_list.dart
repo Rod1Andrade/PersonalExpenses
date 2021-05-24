@@ -15,34 +15,31 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.60,
-      child: ListView.builder(
-          itemCount: transctionModeList.length,
-          itemBuilder: (context, index) {
-            final transaction = transctionModeList[index];
-            return Card(
-              elevation: 4.0,
-              child: ListTile(
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
-                  color: Theme.of(context).errorColor,
-                  onPressed: () => toDelete(transaction.id),
-                ),
-                leading: CircleAvatar(
-                  radius: 30,
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: FittedBox(
-                        child:
-                            Text('R\$${transaction.value.toStringAsFixed(2)}')),
-                  ),
-                ),
-                title: Text(transaction.title),
-                subtitle: Text(DateFormat('d/MM/y').format(transaction.date)),
+    return ListView.builder(
+        itemCount: transctionModeList.length,
+        itemBuilder: (context, index) {
+          final transaction = transctionModeList[index];
+          return Card(
+            elevation: 4.0,
+            child: ListTile(
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                color: Theme.of(context).errorColor,
+                onPressed: () => toDelete(transaction.id),
               ),
-            );
-          }),
-    );
+              leading: CircleAvatar(
+                radius: 30,
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: FittedBox(
+                      child:
+                          Text('R\$${transaction.value.toStringAsFixed(2)}')),
+                ),
+              ),
+              title: Text(transaction.title),
+              subtitle: Text(DateFormat('d/MM/y').format(transaction.date)),
+            ),
+          );
+        });
   }
 }

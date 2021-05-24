@@ -1,8 +1,8 @@
 import 'package:app/models/transacion_model.dart';
+import 'package:app/utils/responsive.dart';
 import 'package:app/widgets/chart.dart';
 import 'package:app/widgets/transaction_form.dart';
 import 'package:app/widgets/transaction_list.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:app/utils/messages.dart';
 
@@ -16,6 +16,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  /// Controle do Chart: Somente em modo Landscape
+  bool _showChart = false;
+
+  /// App bar
+  AppBar get _appBar => AppBar(
+        title: Text(Messages.APP_TITLE),
+        centerTitle: true,
+        actions: [
+          if (Responsive.isLandscape(context))
+            IconButton(
+              icon: Icon(
+                _showChart ? Icons.menu_book : Icons.bar_chart,
+              ),
+              onPressed: () => setState(() => _showChart = !_showChart),
+            )
+        ],
+      );
+
+  /// Transaction List
   final List<TransactionModel> _transactionList = <TransactionModel>[];
 
   /// Retorna as transacoes dos ultimos 7 dias
@@ -54,47 +73,60 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(Messages.APP_TITLE),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: _transactionList.isNotEmpty
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                    Chart(_recentTransaction),
-                    TransactionList(
-                      transctionModeList: _transactionList,
-                      toDelete: _removeTransaction,
-                    )
-                  ])
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    'assets/images/teen-walking.gif',
-                    fit: BoxFit.cover,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      Messages.TITLE_NO_EXPENSES,
-                      style: TextStyle(
-                          fontSize:
-                              Theme.of(context).textTheme.headline6.fontSize),
+      appBar: _appBar,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: _transactionList.isNotEmpty
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                      if (_showChart || !Responsive.isLandscape(context))
+                        Container(
+                          // Responsive Height to Chart
+                          height: Responsive.height(context, _appBar) *
+                              (Responsive.isLandscape(context) ? .7 : .3),
+                          child: Chart(_recentTransaction),
+                        ),
+                      if (!_showChart || !Responsive.isLandscape(context))
+                        Container(
+                          height: Responsive.height(context, _appBar) * .7,
+                          child: TransactionList(
+                            transctionModeList: _transactionList,
+                            toDelete: _removeTransaction,
+                          ),
+                        )
+                    ])
+              : Container(
+                  color: Colors.white,
+                  width: double.infinity,
+                  height: Responsive.height(context, _appBar),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: constraints.maxHeight * 0.6,
+                          child: Image.asset(
+                            'assets/images/teen-walking.gif',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
+              isScrollControlled: true,
               context: context,
               builder: (context) {
                 return SingleChildScrollView(
-                    child: TransactionForm(onAddedExpense: _addTransaction));
+                  child: TransactionForm(onAddedExpense: _addTransaction),
+                );
               });
         },
         child: Icon(Icons.add),
