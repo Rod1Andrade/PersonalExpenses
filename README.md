@@ -6,7 +6,7 @@ nesse repositório foi feito com base no curso de **Leonardo Moura Leitao** na p
 
 ## Português
 
-O aplicação é feita para controlar de forma simples as despesas
+A aplicação é feita para controlar de forma simples as despesas
 pessoais, contendo um gráfico para mostrar os gastos dos últimos 7 dias.
 
 O que eu aprendi:
