@@ -1,4 +1,5 @@
 import 'package:app/models/transacion_model.dart';
+import 'package:app/utils/avaliable_size.dart';
 import 'package:app/widgets/chart.dart';
 import 'package:app/widgets/transaction_form.dart';
 import 'package:app/widgets/transaction_list.dart';
@@ -15,6 +16,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  /// App bar
+  final _appBar = AppBar(
+    title: Text(Messages.APP_TITLE),
+    centerTitle: true,
+  );
+
+  /// Transaction List
   final List<TransactionModel> _transactionList = <TransactionModel>[];
 
   /// Retorna as transacoes dos ultimos 7 dias
@@ -53,19 +61,22 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(Messages.APP_TITLE),
-        centerTitle: true,
-      ),
+      appBar: _appBar,
       body: SingleChildScrollView(
         child: _transactionList.isNotEmpty
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                    Chart(_recentTransaction),
-                    TransactionList(
-                      transctionModeList: _transactionList,
-                      toDelete: _removeTransaction,
+                    Container(
+                      height: AvaliableSize.height(context, _appBar) * .3,
+                      child: Chart(_recentTransaction),
+                    ),
+                    Container(
+                      height: AvaliableSize.height(context, _appBar) * .7,
+                      child: TransactionList(
+                        transctionModeList: _transactionList,
+                        toDelete: _removeTransaction,
+                      ),
                     )
                   ])
             : Column(

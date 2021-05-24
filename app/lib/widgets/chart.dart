@@ -26,15 +26,13 @@ class Chart extends StatelessWidget {
       ));
 
       final String dateInWeek = DateFormat.E().format(weekDay)[0].toUpperCase();
-      double totalInThisDay = transactions
-          .where((transaction) {
-            bool equalsDay = transaction.date.day == weekDay.day;
-            bool equalsMonth = transaction.date.month == weekDay.month;
-            bool equalsYear = transaction.date.year == weekDay.year;
+      double totalInThisDay = transactions.where((transaction) {
+        bool equalsDay = transaction.date.day == weekDay.day;
+        bool equalsMonth = transaction.date.month == weekDay.month;
+        bool equalsYear = transaction.date.year == weekDay.year;
 
-            return equalsDay && equalsMonth && equalsYear;
-          })
-          .fold(0, (value, transaction) => value + transaction.value);
+        return equalsDay && equalsMonth && equalsYear;
+      }).fold(0, (value, transaction) => value + transaction.value);
 
       return ChartModel(weekDay: dateInWeek, value: totalInThisDay);
     }).reversed.toList();
