@@ -2,7 +2,6 @@ import 'package:app/models/transacion_model.dart';
 import 'package:app/widgets/chart.dart';
 import 'package:app/widgets/transaction_form.dart';
 import 'package:app/widgets/transaction_list.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:app/utils/messages.dart';
 
