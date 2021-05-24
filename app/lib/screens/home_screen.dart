@@ -16,13 +16,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _switchValue = false;
+  /// Controle do Chart: Somente em modo Landscape
+  bool _showChart = false;
 
   /// App bar
-  final _appBar = AppBar(
-    title: Text(Messages.APP_TITLE),
-    centerTitle: true,
-  );
+  AppBar get _appBar => AppBar(
+        title: Text(Messages.APP_TITLE),
+        centerTitle: true,
+        actions: [
+          if (Responsive.isLandscape(context))
+            IconButton(
+              icon: Icon(
+                _showChart ? Icons.menu_book : Icons.bar_chart,
+              ),
+              onPressed: () => setState(() => _showChart = !_showChart),
+            )
+        ],
+      );
 
   /// Transaction List
   final List<TransactionModel> _transactionList = <TransactionModel>[];
@@ -69,26 +79,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                    if (Responsive.isLandscape(context))
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(Messages.LABEL_SHOW_CHART),
-                          Switch(
-                            value: _switchValue,
-                            onChanged: (value) =>
-                                setState(() => _switchValue = value),
-                          ),
-                        ],
-                      ),
-                    if (_switchValue || !Responsive.isLandscape(context))
+                    if (_showChart || !Responsive.isLandscape(context))
                       Container(
                         // Responsive Height to Chart
                         height: Responsive.height(context, _appBar) *
                             (Responsive.isLandscape(context) ? .7 : .3),
                         child: Chart(_recentTransaction),
                       ),
-                    if (!_switchValue || !Responsive.isLandscape(context))
+                    if (!_showChart || !Responsive.isLandscape(context))
                       Container(
                         height: Responsive.height(context, _appBar) * .7,
                         child: TransactionList(
