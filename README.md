@@ -21,9 +21,7 @@ O que eu aprendi:
 
 ## Imagens da aplicação
 
-<img src="presentation_resources/Screenshot_1621888145.png" width="300" height="600">
-<img src="presentation_resources/Screenshot_1621888174.png" width="300" height="600">
-<img src="presentation_resources/Screenshot_1621888201.png" width="300" height="600">
+<img src="presentation_resources/Screenshot_1621888145.png" width="300" height="600"><img src="presentation_resources/Screenshot_1621888174.png" width="300" height="600"><img src="presentation_resources/Screenshot_1621888201.png" width="300" height="600">
 
 ## License
 
