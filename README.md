@@ -1,4 +1,7 @@
 # PersonalExpenses
+
+<img src="https://img.shields.io/badge/Framework-Flutter-blue"> <img src="https://img.shields.io/badge/Plataforma-Cross--Mobile-orange">
+
 ## _Despesas Pessoais_
 
 Projeto feito no processo de aprendizado do framework flutter, o material construído
